@@ -1,0 +1,23 @@
+\contentsline {chapter}{Forewords}{3}
+\contentsline {chapter}{\numberline {1}Getting started}{5}
+\contentsline {section}{\numberline {1.1}Installation}{5}
+\contentsline {section}{\numberline {1.2}Documentation and Examples}{5}
+\contentsline {section}{\numberline {1.3}Tutorial}{6}
+\contentsline {subsection}{\numberline {1.3.1}Templates for model spaces and propagators}{6}
+\contentsline {subsection}{\numberline {1.3.2}Hartree-Fock propagator}{8}
+\contentsline {subsection}{\numberline {1.3.3}Coupled cluster and perturbation theory}{9}
+\contentsline {subsection}{\numberline {1.3.4}One-body propagator}{10}
+\contentsline {subsection}{\numberline {1.3.5}Lanczos acceleration and self-consistency}{12}
+\contentsline {chapter}{\numberline {2}Types of data files}{14}
+\contentsline {section}{\numberline {2.1}Model Space}{14}
+\contentsline {section}{\numberline {2.2}One-body propagator}{17}
+\contentsline {section}{\numberline {2.3}Interactions data files}{20}
+\contentsline {subsection}{\numberline {2.3.1}Native {\em BcDor} interaction files ({\tt .bcd} and {\tt .bin})}{21}
+\contentsline {subsection}{\numberline {2.3.2}Matrix elements for Coulomb and center of mass corrections}{23}
+\contentsline {subsection}{\numberline {2.3.3}Interaction files from the CENS pakage}{23}
+\contentsline {chapter}{\numberline {3}Features of the unpublished Code}{25}
+\contentsline {section}{\numberline {3.1}Further file formats}{25}
+\contentsline {subsection}{\numberline {3.1.1}Three-nucleon force }{25}
+\contentsline {subsection}{\numberline {3.1.2}One-Body Density Matrix}{27}
+\contentsline {chapter}{\numberline {A}Code for generating TBI files}{28}
+\contentsline {chapter}{Software Licence}{29}

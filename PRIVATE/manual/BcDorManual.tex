@@ -1,0 +1,1210 @@
+\documentclass[12pt,a4paper,twoside]{report}
+
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+\usepackage{fancyvrb}
+
+
+%\newcommand{\bra}[1]{\left\langle #1\right|}
+%\newcommand{\ket}[1]{\left| #1\right\rangle}
+\newcommand{\bra}[1]{\langle #1 \vert}
+\newcommand{\ket}[1]{\vert #1\rangle}
+
+\newcommand{\bcd}{{\em BcDor} }
+
+\begin{document}
+
+
+\title{\sf BoccaDorata package for Self-consistent Green's function calculations \\
+ --- \\
+  User manual}
+\author{Carlo Barbieri\\
+~ \\
+{\em Department of Physics, University of Surrey,} \\
+{\em Guildford GU2 7XH, UK} \\
+ ~\\
+ ~\\
+ }
+\date{July 2015}
+%\date
+\maketitle
+ 
+\tableofcontents
+ 
+
+\fvset{commandchars=\\\{\}}
+
+\chapter*{Forewords}
+\addcontentsline{toc}{chapter}{Forewords}
+
+The \bcd%
+\footnote{The full name {\em BoccaDorata} is taken from a character of comic book creator Hugo Pratt.}
+code is built upon a C++ class library that I have
+developed over the past decade and that is meant for the computation of
+many-body Green's functions (a.k.a. propagators) in finite systems. This is
+written in J-coupled formalism and it is therefore mostly suitable for the {\em ab-initio}
+computation of finite nuclei in the medium mass range.
+
+The public version of \bcd contains all the basic components of this library and 
+allow for calculation of closed-shell nuclei up to {\em second order} in the self-energy
+expansion and up to the {\em coupled cluster with doubles} approximation. 
+This will  allow for simple computations of binding energies, of the nuclear self-energy (which
+provides an optical potential) and of the spectral function.
+
+
+ The main code is invoked from the terminal,  with arguments that allow to input most
+ parameters and to control the execution directly from the command line.  It also also provides some interfaces
+to read file formats normally used within the nuclear theory community. This 
+should simplify its direct use for non experts.
+%
+However, it must be borne in mind that \bcd is not meant to be a black box tool. 
+The user will need at least a basic understanding of Green's function and many-body
+theory in order to properly interpret the outputs and control the validity of the results obtained.
+All together,  the \bcd can be extremely useful if used properly but the principle of
+\hbox{\em junk-in--junk-out} rules here---as always. 
+
+
+The public version of  \bcd is freely available at the following weblink:
+\verb+http://personal.ph.surrey.ac.uk/~cb0023/bcdor/+
+and this manual describes how to use it.
+%
+The first chapter contains a detailed tutorial that shows how to run the code from command line
+and  guides the user (almost hand by hand) through the procedure for performing a full
+calculation. This  covers all the principal possibilities. Refer to the command `\verb+BcDor -h+'
+to have a complete list of all possible options.  The file formats used by \bcd for various 
+objects (model space, propagators, etc...) are described in details in Chapter~\ref{ch:fileformats}.
+This explains how the required input data files are to be prepared.
+
+
+ To use the library at a deeper level, one will need some knowledge of C++ and to first
+learn the functioning of the three main classes that form \hbox{\bcd:} these are named
+\verb+ModSpace_t+, \verb+SpPtop_t+ and \verb+VppInt_t+ in the source files.
+Besides its use in simple calculations and research applications, \bcd is an
+example of an advanced code for state-of-the-art  {\em ab-initio}
+nuclear theory (except, perhaps, for being too short of comments right now...) and it
+could be a good starting point for students who want to enter the field  and wish
+to pursue more sophisticated calculations. I would be delighted if this software could
+help fostering some new major advance in theoretical many-body methods.
+
+\vskip 1cm
+
+\noindent
+Happy Computing!
+
+\vskip 1cm
+
+\noindent
+C. Barbieri, Surrey, July 2015.
+
+\chapter{Getting started}
+
+
+\section{Installation}
+
+  The source code is found in the folder `\verb+source+'. Enter this directory, 
+modify the ÔMakefileÕ appropriately and type `\verb+make+'. Put the executable
+`\verb+BcDor+' in your search \verb+$PATH+. A C++ compiler and a BLAS/LAPACK library
+are needed.
+
+Once the code is compiled type: \\
+~\\
+{\color{blue} \verb+BcDor -v+} \qquad    (for the version and compilation time) \\
+~\\
+and \\
+~\\
+{\color{blue} \verb+BcDor -h+}  \qquad   (for a quick help).
+
+\vskip 1cm
+
+\section{Documentation and Examples}
+
+
+  A copy of this manual  is found in the `\verb+docs+' folder.
+
+  Auxiliary files for center of mass (COM) corrections and the Coulomb interaction in a 
+harmonic oscillator basis are in the folder `\verb+datafiles+'.  This includes also 
+a few examples of two-nucleon interaction files that  can used for experimenting.
+All these file formats are described in Chapter~\ref{ch:fileformats}.
+
+ The folder `\verb+examples+' contains the output propagators and other  files that 
+are calculated following the tutorial in the next section.
+
+
+
+
+\section{Tutorial}
+
+
+The results of the following calculations are in the
+\verb+examples+ folder, while input files of two-body matrix
+elements are in \verb+datafiles+.  One can run
+\begingroup  \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor -h  
+\end{verbatim} 
+\endgroup
+
+\noindent
+to see all possible command line options.
+
+\vskip .3cm
+
+\bcd assumes that the kinetic energy of the center of mass motion is to be subtracted (i.e., \verb+Trel=3+ is set by default). 
+Unless one turns off this feature, the code will look for the relevant input file during execution. So, let's first copy this and a file with  
+ a two-body nuclear force to the folder we are working in:
+\begingroup  \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> cp -i ../datafiles/Vpp_cdbonn_gmtx-50.0MeV_hw14MeV_Nmax7.bcd  ./Vpp.bcd
+
+> cp -i ../datafiles/Trel-pipj_Nmax13.bcd                  ./Trelpp_1.bcd
+\end{verbatim} 
+\endgroup
+
+\noindent
+(the file \verb+Trel-pipj_Nmax13.bcd+ also works for much larger model spaces, up to $N_{\rm max}$=13).
+ Let's now get started.
+
+\subsection{Templates for model spaces and propagators}
+\label{sec:tut_templates}
+
+To create a file for an harmonic oscillator space truncated at $N_{\rm max}$=7 \hbox{(8 major} shells), type:
+\begingroup  \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor   MakeMdSp
+\end{verbatim} 
+\endgroup
+\noindent
+and enter \verb+600+ (or any very large number), \verb+7+ and \verb+2+. The model space is displayed and
+a file \verb+input_msp-wt+ is created, which could be renamed as follows
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> mv -i input_msp-wt  input_msp_N7
+
+\end{verbatim} 
+\endgroup
+
+
+The option \verb+MakeSpProp+ generates a template single-particle propagator based on the
+orbits in the model space. To do this, one must mark which orbits are to be considered as
+hole states by putting a `\verb+1+' in the second column of the model space file (maked in red below). 
+In order to  calculate $^{16}$O we will then edit the file \verb+input_msp_N7+ as follows:
+\begingroup  \color{OliveGreen}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{Verbatim} 
+# Definition of the model space by listing its s.p. orbitals
+#------------------------------------------------------------
+
+# number of (ilj pi) subshells and total number of orbitals:
+      30      72
+
+# subshell:  v_s1/2 
+       0       1       0       0
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       \textbf{\textcolor{red}{1}}    0.000     # 0v_s1/2
+       1       0    0.000     # 1v_s1/2
+       2       0    0.000     # 2v_s1/2
+       3       0    0.000     # 3v_s1/2
+
+# subshell:  v_p1/2 
+       1       1       1       0
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       \textbf{\textcolor{red}{1}}    0.000     # 0v_p1/2
+       1       0    0.000     # 1v_p1/2
+       2       0    0.000     # 2v_p1/2
+       3       0    0.000     # 3v_p1/2
+
+# subshell:  v_p3/2 
+       1       3       1       0
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       \textbf{\textcolor{red}{1}}    0.000     # 0v_p3/2
+       1       0    0.000     # 1v_p3/2
+       2       0    0.000     # 2v_p3/2
+       3       0    0.000     # 3v_p3/2
+       :       :      :
+       :       :      :
+       :       :      :
+# subshell:  p_s1/2 
+       0       1       0       1
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       \textbf{\textcolor{red}{1}}    0.000     # 0p_s1/2
+       1       0    0.000     # 1p_s1/2
+       2       0    0.000     # 2p_s1/2
+       3       0    0.000     # 3p_s1/2
+
+# subshell:  p_p1/2 
+       1       1       1       1
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       \textbf{\textcolor{red}{1}}    0.000     # 0p_p1/2
+       1       0    0.000     # 1p_p1/2
+       2       0    0.000     # 2p_p1/2
+       3       0    0.000     # 3p_p1/2
+
+# subshell:  p_p3/2 
+       1       3       1       1
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       \textbf{\textcolor{red}{1}}    0.000     # 0p_p3/2
+       1       0    0.000     # 1p_p3/2
+       2       0    0.000     # 2p_p3/2
+       3       0    0.000     # 3p_p3/2
+       :       :      :
+       :       :      :
+\end{Verbatim} 
+\endgroup
+
+
+The following will generate a template propagator file named \verb+sp_prop-wt+, which we rename 
+to indicate that it is a unperturbed propagator for the $^{16}$O nucleus,
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor MdSp=input_msp_N7  MakeSpProp
+
+> mv  -i  sp_prop-wt sp_prop_O16_unpert
+\end{verbatim} 
+\endgroup
+\noindent
+
+\subsection{Hartree-Fock propagator}
+
+
+We are now in the position to solve the Hartree-Fock (HF) equations. To do this, we must tell the
+mass number, the number of protons and neutrons, and the harmonic oscillator frequency ($\hbar\Omega$=14~MeV for
+the two-body interactions file we choose).
+The following command will perform one iteration of the HF equations (to be entered all on one line):
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                            SpProp=sp_prop_O16_unpert  HF
+\end{verbatim} 
+\endgroup
+\noindent
+The final energy, the number of nucleons and the list of unoccupied/occupied orbits is listed at the end
+of the screen output. The input values of \verb+A+, \verb+N+ and  \verb+Z+ are required but they are
+used only to determine the correct coefficients for the center of mass corrections (in this case only \verb+A+
+is relevant).
+The propagator resulting from this calculation is written in an output file named \verb+sp_prop-SC-A=16_itr1-wt+.
+Beware that  \bcd sometimes interprets certain solutions as occupied states when they are not or vice versa. 
+In these cases one can fix this by forcing the Fermi level of a given partial wave \verb+i+ with the option \verb+SetEf=i,Ef+.
+This should not be needed for the present example.
+
+\vskip 0.3cm
+
+The option \verb+HF+ executes only one iteration. One can state \verb+HF=i+ to iterate \verb+i+ times or \verb+HF=-1+
+to iterate until convergence. Let's do the latter:
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                       SpProp=sp_prop_O16_unpert  HF=-1
+\end{verbatim} 
+\endgroup
+\noindent
+At the end of the execution, \bcd generates a propagator file named \verb++ with the result
+of the last iteration. This has always the same name, with a `\verb+-999+' in it, independently of how many iterations have been performed. 
+Since this is our convergent HF solution, let's save it with a proper name:
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+>  mv -i sp_prop-SC-A\=16_itr-999-wt sp_prop_O16_HF
+\end{verbatim} 
+\endgroup
+\noindent
+
+Finally, the \verb+Koltun+ option can be used to calculate the Koltun sum rule for the total energy,
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                       SpProp=sp_prop_O16_HF  Koltun
+\end{verbatim} 
+\endgroup
+\noindent
+The Koltun sum rule is exact for two-body interactions and for the exact one-body propagator. When
+applied to a Hartree-Fock state, it is related to the Koopmans theorem and it simplifies to calculate
+the HF energy as a sum of the single particle energies for the occupied orbits. Hence, the 
+\verb+Koltun+ option should give exactly the same results of the convergent HF run above.
+
+\vskip .3 cm
+The expectation values of kinetic energy (with $T_{COM}$ subtracted as we are implicitly using
+the \verb+Trel=3+ option), of the two-body interaction and the total energy in HF approximations
+are:
+\begin{eqnarray}
+\langle \hat{T}\rangle&=&~~336.534 \, \hbox{MeV, }  \nonumber \\
+\langle\hat{V}\rangle&=&-398.653  \, \hbox{MeV,}  \nonumber \\
+  E_{Koltun} = E_{HF}&=& -62.1194 \, \hbox{MeV.}  \qquad \qquad \qquad \qquad \qquad \qquad
+\end{eqnarray}
+
+
+
+\subsection{Coupled cluster and perturbation theory}
+
+The HF propagator just obtained can  be used to calculate the 
+correlation energy from second order many-body perturbation
+theory. The option \verb+MBPT2+ works exactly as for the \verb+Koltun+
+case but it also calculates the extra contributions at second order:
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                             SpProp=sp_prop_O16_HF  MBPT2
+\end{verbatim} 
+\endgroup
+\noindent
+In the output from this calculations, the value marked as `\verb+E2 = ...+' is
+the MBPT(2) contribution to the correlation energy.
+
+In the present version of the code, the coupled cluster method has been implemented
+just for the simplest approximation of only doubles (this may change in the future).
+ Furthermore,  beware that \bcd assumes an HF reference
+state: giving a different input than HF would neglect the non-diagonal $f_{ab}$
+and $f_{ij}$ terms in the CCD equations.
+
+Since we do have an HF propagator, we can do the correct CCD calculations
+by simply typing:
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                               SpProp=sp_prop_O16_HF  CCD
+\end{verbatim} 
+\endgroup
+\noindent
+\bcd will first build the unperturbed $T^2$ amplitudes and then start iterations. As
+usual, the value before the first iterations is the MBPT(2) approximation to the
+correlation energy. The converged energy is instead the correlation energy in
+the CCD approximation.
+
+The present coupled cluster option also allows for linear mixing and for  
+switching on the two-body interaction in an adiabatic way (which may help only in
+particular cases, when the method is on the brink of diverging). However, no other
+convergence accelerators are implemented at the moment.
+
+To summarise the correlations energies in MBPT(2) and CCD are:
+\begin{equation}
+E^{(2)}_{corr}=-59.228 \, \hbox{MeV, \quad   and \quad  }  
+E^{CCD}_{corr}=-59.005  \, \hbox{MeV.}
+\end{equation}
+
+
+
+\subsection{One-body propagator}
+
+The option \verb+2nd+ will solve the Dyson equation with a self-energy calculated up to second order in 
+perturbation theory. This results in an all-orders, nonperturbative, resummation of the nuclear self-energy.
+In the following example, both the energy-independent part, $\Sigma^{(\infty)}_{\alpha\beta}$, and the 
+second order diagram, $\Sigma^{(2)}_{\alpha\beta}(\omega)$, are calculated based on the input 
+HF propagator. They are generated for each partial wave present in the model space and then diagonalised.
+Since this procedure elaborates much more information than just the correlation energy, it will take a
+few minutes to go through (again, all entered on one line):
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                               SpProp=sp_prop_O16_HF  2nd
+\end{verbatim} 
+\endgroup
+
+As each partial wave is diagonalised, \bcd will output to screen the Dyson orbits surrounding
+the Fermi surface, together with partial sums of the Koltun sum rule.
+ Note that $\Sigma^{(\infty)}_{\alpha\beta}$ is calculated  as the `correlated HF' (cHF) diagram (or tadpole
+ diagram) and the input propagator is used to do this at the first iteration. In the above example, this simplifies
+ to the normal HF potential since we have used the HF results  as an input.
+  Thus,  the second order contribution to the energy independent self-energy is neglected and this calculation is
+  strictly speaking  {\em not} a compete ADC(2) truncation. The next subsection describes how to calculate this
+missing term (and much more than that) self-consistently.
+
+\vskip 0.3 cm
+
+The correlated one body Green's function obtained by the  one iteration performed above
+is written  to a file called `\verb+sp_prop-SC-A=16_itr1-wt+'. We can save this with a more meaningful
+name and recalculate the Koltun sum rule at any later time to obtain the total energy,
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> mv -i sp_prop-SC-A=16_itr1-wt sp_prop_O16_2nd
+
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                           SpProp=sp_prop_O16_2nd  Koltun
+\end{verbatim} 
+\endgroup
+\noindent
+The resulting value for the ground state energy is $E^{2nd}_{g.s.}$=-134.846~MeV.
+
+
+The file `\verb+sp_prop_O16_2nd+' now contains the fully dressed propagator, from which the
+full one-particle and one-hole spectral functions can be extracted and plotted. The energy differences
+for the  addition and removal of a nucleon are clearly indicated in the file together with the corresponding
+spectroscopic factors (not necessarily converged at second order and in the small model space used here). 
+Refer to Section~\ref{sec:gspfiles}  for details about the format of this file.
+%
+Command options for facilitating the graphical plots of propagators are not available at the moment 
+but may be included in future distributions of the software.
+
+\vskip 0.3 cm
+
+
+The self-energy used for the above calculations can also be calculated separately
+and saved to file using the `\verb+MakeSelfEn+' option. \bcd saves this information
+in separate files (one for each partial wave) inside a folder named `\verb+bcdwk+' by 
+default (see the `\verb+-h+' option to change this name).
+This is done by typing,
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> mkdir bcdwk
+
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                   SpProp=sp_prop_O16_HF  MakeSelfEn  2nd
+\end{verbatim} 
+\endgroup
+\noindent
+where  `\verb+MakeSelfEn+' tells \bcd to only calculate the self-energy and save it without
+diagonalising the Dyson equation. The  `\verb+2nd+' is needed to tell what approximation
+for $\tilde\Sigma_{\alpha\beta}(\omega)$ is to be used.
+
+The self-energy is now stored in  \verb+bcdwk+ as binary files:
+\begingroup  \color{OliveGreen}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{Verbatim} 
+{ \color{blue}> ls -l bcdwk/}
+total 7392
+-rw-r--r--  1 user  group   90244 26 Jul 14:24 SelfEn_Dyn_J2pi=1+_dt=0.bin
+-rw-r--r--  1 user  group   90244 26 Jul 14:24 SelfEn_Dyn_J2pi=1+_dt=1.bin
+-rw-r--r--  1 user  group   90868 26 Jul 14:24 SelfEn_Dyn_J2pi=1-_dt=0.bin
+-rw-r--r--  1 user  group   90868 26 Jul 14:24 SelfEn_Dyn_J2pi=1-_dt=1.bin
+-rw-r--r--  1 user  group   93268 26 Jul 14:24 SelfEn_Dyn_J2pi=11+_dt=0.bin
+-rw-r--r--  1 user  group   93268 26 Jul 14:24 SelfEn_Dyn_J2pi=11+_dt=1.bin
+    :           :                     :            :
+    :           :                     :            :
+\end{Verbatim} 
+\endgroup
+\noindent
+The is an option,  \verb+PlotSelfEn+, that can be used to cast these files in human readable text format.
+
+\vskip 0.3cm
+
+The self-energy just calculated can be used to solve the Dyson equation for 
+the one-body propagator. In the following case, the  option `\verb+ExtSE+' tells \bcd to perform
+one single iteration of the Dyson equation still using the propagator `\verb+sp_prop_O16_HF+'
+to calculate $\Sigma^{(\infty)}_{\alpha\beta}$ but taking the energy dependent self-energy
+form the \verb+bcdwk+ folder:
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+>BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                             SpProp=sp_prop_O16_HF  ExtSE
+\end{verbatim} 
+\endgroup
+\noindent
+Note that this is different from the above calculation since the input propagator is used {\em only}
+to initiate the calculation of  $\Sigma^{(\infty)}_{\alpha\beta}$. 
+ However, since the the self-energy present in `\verb+bcdwk+' was also calculated at second
+order from the HF reference state, this last example will give exactly the same output of the 
+previous calculation.
+
+
+\subsection{Lanczos acceleration and self-consistency}
+
+For large model space, the diacgonalization of the Dyson equation slows down
+due to the large number of $2p1h$ and $2h1p$ configurations contributing to the
+poles of the self-energy. This can be accelerated using a Lanczos algorithm to replace
+the self-energy with an effective one having a much smaller number of poles. The reader is refereed 
+to Phys. Rev. C{\bf89}, 024323 (2014) for all technical details of this procedure.
+
+We first delete the files already contained in  `\verb+bcdwk+'. The procedure
+is  to generate a file with pivot vectors for the Lanczos iterations,
+to build the new reduced self-energy using Lanczos, and then to diagonalise
+the Dyson equation as done previously but with the new self-energy. A number of 50
+iteration per pivot will be sufficient to obtain an accurate result for this example. 
+In sequence:
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+> rm -f  bcdwk/Sel*
+
+>BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                           SpProp=sp_prop_O16_HF   MakePivots=50,Pivts.dat
+
+>BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                              SpProp=sp_prop_O16_HF   MakeSelfEn  2nd
+                                              LanDysPiv=Pivts.dat  Lanczos
+
+>BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                              SpProp=sp_prop_O16_HF  ExtSE
+
+\end{verbatim} 
+\endgroup
+\noindent
+As usual, one can rename the calculated propagator and perform
+the Koltun sum rule:
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+mv -i  sp_prop-SC-A\=16_itr1-wt sp_prop_O16_2nd_Lanc50
+
+>BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                      SpProp=sp_prop_O16_2nd_Lanc50 Koltun
+
+\end{verbatim} 
+\endgroup
+
+Comparing to the results in the previous section one can see that there is no loss of 
+accuracy in calculated energies:
+\begin{eqnarray}
+\begin{array}{lcl}
+\hbox{\underline{Full self-energy:}}   & & \hbox{\underline{Lanczos reduced self-energy:}}  \\
+\langle \hat{T}\rangle =~~366.529 \, \hbox{MeV}   & \qquad \qquad & \langle \hat{T}\rangle =~~366.528 \, \hbox{MeV} \\
+\langle\hat{V}\rangle =-501.375  \, \hbox{MeV}     &   & \langle\hat{V}\rangle =-501.374  \, \hbox{MeV}  \\
+  E^{2nd}_{Kolt} =  -134.846 \, \hbox{MeV}     &   &  E^{2nd}_{Kolt} =  -134.847 \, \hbox{MeV} 
+\end{array}
+\nonumber
+\end{eqnarray}
+At this point it is instructive to  inspect the two propagator files  `\verb+sp_prop_O16_2nd+'
+and  `\verb+sp_prop_O16_2nd_Lanc50+'  and to compare how they differ in size and how much the 
+Dyoson orbitals have changed close to the Fermi energy.
+
+\vskip 1cm 
+
+
+
+Now that the Dyson diagonalization has been speeded up, it can be iterated to
+reach a self-consistent solution for $\Sigma^{(\infty)}_{\alpha\beta}$. This
+approximation is referred to as `sc0'  and  resums all order contributions
+to the energy independent self-energy, including second-, third-order, and beyond
+[see Phys. Rev. C{\bf89}, 024323 (2014) for a full discussion].
+As for the \verb+HF+ option, `\verb+ExtSE=-1+' iterates the Dyson equations until convergence:
+
+\begingroup   \color{blue}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+>BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                          SpProp=sp_prop_O16_HF  ExtSE=-1
+
+> mv -i   sp_prop-SC-A\=16_itr-999-wt sp_prop_O16_2nd_sc0
+
+> BcDor  MdSp=input_msp_N7  A=16  Z=8  N=8  hwHO=14.0  Vpp=Vpp.bcd  
+                                     SpProp=sp_prop_O16_2nd_sc0    Koltun
+\end{verbatim} 
+\endgroup
+\noindent
+where we obtain \hbox{$E^{ADC(2)}_{g.s.}$=-122.072~MeV} for the total energy in the \hbox{ADC(2)-sc0} approximation.
+
+\vskip 1.2 cm
+
+The following table summarises all the results obtained above:
+\begingroup   \color{Brown}
+   \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim} 
+    HF:           E_0    =  -62.119 MeV
+
+    MBPT2:        E_2    =  -59.228 MeV         E_tot  =  -121.347 MeV
+
+    CCD:          E_corr =  -59.005 MeV         E_tot  =  -121.124 MeV
+
+    GF(2nd ord Ñ- 1 itr.)                        E_kolt =  -134.846 MeV
+
+    ADC(2)-sc0                                  E_kolt =  -122.072 MeV
+\end{verbatim} 
+\endgroup
+
+
+%\begingroup   \color{blue}
+%   \fontsize{10pt}{12pt}\selectfont
+%\begin{verbatim} 
+%
+%\begin{eqnarray}
+%\langle \hat{T}\rangle=357.184  \\ 
+%  \langle\hat{V}\rangle=-415.113 \\
+%    E_{HF}=-57.9294\\
+%    E^{(2)}_{corr}=-58.8737 \\
+%    E^{(MBPT2)}_{0}=-116.803 \\
+%    E^{(CCD)}_{corr}=-66.227 \\
+%    E^{(CCD)}_{0}=-124.156 \\
+%    ~ \\
+%    E^{GF-2nd}_0= -129.688
+%  \end{eqnarray}
+%
+%
+%   With com corr:
+%   \begin{eqnarray}
+%\langle \hat{T}\rangle=336.534  \\ 
+%  \langle\hat{V}\rangle=-398.653 \\
+%    E_{HF}= -62.1194\\
+%    E^{(2)}_{corr}=-59.228 \\
+%    E^{(MBPT2)}_{0}=-121.347 \\
+%    E^{(CCD)}_{corr}=-59.005 \\
+%    E^{(CCD)}_{0}=-121.124 \\
+%    ~ \\
+%    E^{GF-2nd}_0= -134.846
+%  \end{eqnarray}
+%
+%
+%Full (Trel=0):
+%U1body_tot = 366.529
+%V_tot      = -501.375
+%E_tot      = -134.846
+%
+%
+%Lanczs 50:
+%U1body_tot = 366.528
+%V_tot      = -501.374
+%E_tot      = -134.847
+%
+%
+%Final ADC(2)/sc0:
+%U1body_tot     =          338.194
+%V_tot          =         -460.266
+%E_tot          =         -122.072
+%E_tot/A        =         -7.62949
+%A_tot          =          16.1999
+%
+%\end{verbatim} 
+%\endgroup
+%\noindent
+
+
+\chapter{Types of data files}
+\label{ch:fileformats}
+
+Microscopic many-body calculation for systems such as atomic nuclei require three
+input ingredients: the Hilbert space (here defined through a single particle model space),
+the Hamiltonian (here given by matrix elements of a two-body interaction) and a reference
+state upon which the complete wave function or propagator are constructed.
+
+Correspondingly, \bcd reads three main types of data files for the {\em model space},
+the {\em two-body interaction} and the {\em one-body propagator }$g_{\alpha\beta}(\omega)$.
+Propagator files are used both to define the input (unperturbed) reference states and 
+to store the actual calculated propagator (hence, the spectral function).
+
+\section{Model Space}
+\label{sec:mspfiles}
+
+The file that describes the model space is passed to the code through
+the command line option \verb+MdSp=filename+. The \bcd code is written to work in 
+in J-coupled formalism. Thus, it expects single particle orbits in a spherical basis
+where orbital momentum $\ell$ and spin $s$ are coupled to a total angular momentum $j$.
+In the vast majority of applications this will be a spherical harmonic oscillator basis. However,
+the the code is {\em not} limited to this space and can work with any discretised spherical basis.
+
+ Each single particle orbit is $\{\alpha\}$ is identified by the pincipal quantum number 
+ $n_\alpha$, the parity $\pi_\alpha$ (=0 for positive and =1 for negative parity), the total angular
+ momentum $j_\alpha$ and the charge $e_\alpha$ (-1, 0, +1 for electrons, neutrons and protons).
+The latter three quantum numbers represent symmetries of the total Hamiltonian and therefore are conserved for quasiparticle and quasihole excitations (a J=0 ground state is always assumed here).
+The model space is therefore grouped by {\em partial waves}, or `{\em subshells}', of given parity, angular momentum, and charge: $a\equiv$($\pi_\alpha$, $j_\alpha$, $e_\alpha$). The orbits belonging to each partial wave are distinguished by their $n_\alpha$ and the full set of quantum numbers  is $\alpha\equiv$($n_\alpha$,$a$)=($n_\alpha$, $\pi_\alpha$, $j_\alpha$, $e_\alpha$). The magnetic quantum number $m_{j_\alpha}$ is implicitly assumed and does not need to be specified to define the model space.
+
+The following example demonstrates the structure of the input file required to describe the model space:
+
+\begingroup   \color{OliveGreen}
+   \fontsize{11pt}{12pt}\selectfont
+\begin{verbatim} 
+# Definition of the model space by listing its s.p. orbitals
+#------------------------------------------------------------
+
+# number of (ilj\pi) subshells and total number of orbitals:
+      30      72
+
+# subshell:  v_s1/2 
+       0       1       0       0
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       1    0.000     # 0v_s1/2
+       1       0    0.000     # 1v_s1/2
+       2       0    0.000     # 2v_s1/2
+       3       0    0.000     # 3v_s1/2
+
+# subshell:  v_p1/2 
+       1       1       1       0
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       1    0.000     # 0v_p1/2
+       1       0    0.000     # 1v_p1/2
+       2       0    0.000     # 2v_p1/2
+       3       0    0.000     # 3v_p1/2
+
+# subshell:  v_p3/2 
+       1       3       1       0
+       4       2       2
+# principal q.#,  p/h character and sp energies:
+       0       1    0.000     # 0v_p3/2
+       1       0    0.000     # 1v_p3/2
+       2       0    0.000     # 2v_p3/2
+       3       0    0.000     # 3v_p3/2
+       :       :      :
+       :       :      :
+       :       :      :
+\end{verbatim} 
+\endgroup
+
+In details:
+\begin{itemize}
+\item The first 4 lines are comments and are not read by the code.
+\item The s 5-th line contains the numbers of different partial waves ($j \pi e$) that form the model
+space and the total number single particle orbits ($n j \pi e$), not counting the $m_j$ degeneracy.
+\item After a blank line, there must be a series of blocks describing each separate partial wave.
+       These block are separated by a blank line.
+\item For each partial wave block:
+\begin{itemize}
+\item The first line is a comments, e.g. giving a human readable description of the partial wave.
+\item The second line contains, in order, the quantum numbers $\ell_\alpha$,  $2j_\alpha$,
+       $\pi_\alpha$ and $e_\alpha$. Note that this code is for many-fermion systems, thus 
+       the {\em integer} value of $2j$ must be given.  The quantum number $\ell$ must be specified
+       but it is redundant for a set of spin-$\frac{1}{2}$ particles since it is already constrained by $j$
+       and $\pi$. For the \bcd code to work correctly, the $\pi$ quantum number is the one that matters.
+\item The third line is expected to contain three integer numbers. The first is the number of orbits
+       (differing by their principal quantum number $n$) that belong to this partial wave. The remaining
+       two numbers are redundant and not used but must be specified.
+\item The fourth line is a comment.
+\item Each of the following lines describes a different orbits and contains three numbers: one
+       {\em integer} giving the principal quantum number $n_\alpha$,  a second {\em integer} value
+       and a {\em floating point} value. The last two values are normally not used but become handy
+       in some situations. For example, the second integer value is used to mark which orbits 
+       should be interpreted as particles or holes when generating a template propagator (see option
+       \verb+MakeSpProp+ in the tutorial at Sec.~\ref{sec:tut_templates}).
+\end{itemize}
+\end{itemize}
+
+
+\vskip .5 cm 
+
+Note that the order of the partial wave blocks within the file is arbitrary.
+Likewise, the single particle orbits within each block do not need to be ordered according to the principal quantum number. 
+The data files for the interaction (see section~\ref{sec:vfiles}) must contain the physical value of quantum number for each matrix element. \bcd reads this information and links it automatically to the correct orbit of the model space.
+{\em However}, the one-body propagator files must contain partial wave blocks in the same order of the model space file (section \ref{sec:gspfiles}). And, likewise, the spectroscopic amplitudes corresponding to different values of  $n_\alpha$  must be listed
+with the same order in both files.
+With this caveat, \bcd  accepts input data with arbitrary ordering:
+
+\begingroup   \color{OliveGreen}
+   \fontsize{11pt}{12pt}\selectfont
+\begin{verbatim} 
+       :       :      :
+       :       :      :
+
+# subshell:  p_f7/2 
+       3       7       1       1
+       6       2       1
+# principal q.#,  p/h character and sp energies:
+       0       1    0.000     # 0p_f7/2
+       5       0    0.000     # 5p_f7/2
+       2       0    0.000     # 2p_f7/2
+       4       0    0.000     # 4p_f7/2
+       3       0    0.000     # 3p_f7/2
+       1       0    0.000     # 1p_f7/2
+
+# subshell:  v_d3/2 
+       2       3       0       0
+       3       2       1
+# principal q.#,  p/h character and sp energies:
+       2       0    0.000     # 2v_d3/2
+       1       1    0.000     # 1v_d3/2
+       0       1    0.000     # 0v_d3/2
+
+       :       :      :
+       :       :      :
+
+\end{verbatim} 
+\endgroup
+
+\section{One-body propagator}
+\label{sec:gspfiles}
+
+The one-body propagator (and hence the spectral function) is stored in terms of its poles and spectroscopic amplitudes. Since \bcd works in a discretised model space, its Lehman representation takes the form of a discrete sum of poles:
+\begin{equation}
+g_{\alpha \beta}(\omega) 
+=
+\sum_n \frac{ ({\cal X}^n_\alpha)^* {\cal X}^n_\beta}{\omega - \varepsilon^+_n + i\eta}
++
+\sum_k \frac{ {\cal Y}^k_\alpha ({\cal Y}^k_\beta)^*}{\omega - \varepsilon^-_k - i\eta}
+\label{eq:gsp_leh}
+\end{equation}
+where we used the following notation for the quasiparticle fragments
+\begin{equation}
+\left\{
+\begin{array}{lcl}
+{\cal X}^n_\alpha &\equiv & \langle \Psi^{A+1}_n | a^\dag_\alpha |  \Psi^A_0 \rangle \\ ~\\
+\varepsilon^+_n &\equiv &  E^{A+1}_n - E^A_0 \\ ~\\
+\lefteqn{ E^{A+1}_n | \Psi^{A+1}_n \rangle = H | \Psi^{A+1}_n \rangle } &&
+\end{array}
+\right.
+\label{eq:gsp_leh}
+\end{equation}
+and for the quasihole fragments
+\begin{equation}
+\left\{
+\begin{array}{lcl}
+{\cal Y}^k_\alpha &\equiv & \langle \Psi^{A-1}_k | a_\alpha |  \Psi^A_0 \rangle \\ ~\\
+\varepsilon^-_k &\equiv &  E^A_0 - E^{A-1}_k \\ ~\\
+\lefteqn{ E^{A-1}_k | \Psi^{A-1}_k \rangle = H | \Psi^{A-1}_k \rangle } &&
+\end{array}
+\right.
+\label{eq:gsp_leh}
+\end{equation}
+In these notations greek indices $\{\alpha\}$ label the set of single particle orbits that define
+the model space, while the $n$ ($k$) indices label the exact eigenstates of the Hamiltonian $H$
+for $A+1$ ($A-1$) particle numbers. 
+
+\vskip .3 cm 
+
+Data files for  single particle propagators are passed to \bcd with the command option \verb+SpProp=filename+
+and must take the following form:
+%
+\begingroup      \color{OliveGreen}
+    \fontsize{8pt}{10pt}\selectfont
+    \begin{verbatim}  
+#  Quasi- particle and hole fragments of the sp propagator
+#----------------------------------------------------------
+
+# number of (ilj\pi) subshells, max n. of radial orbitals:
+#      30       4       0
+
+# Total numbers of qp and qh stored here:
+#      66       6
+
+# Subshell:
+# v_s1/2 
+#       3  # -> tot n. of quasiparticles
+       48.340786      100.000        -1.082472e-02      -1.143617e-01       4.154943e-01       9.023130e-01 
+       17.932187      100.000        -1.192554e-01       2.059822e-01       8.913622e-01      -3.857757e-01 
+       -0.108800      100.000         2.451556e-01      -9.356775e-01       1.659063e-01      -1.920454e-01 
+#       1  # -> tot n. of quasiholes
+      -57.898314      100.000         9.620601e-01       2.626792e-01       7.288995e-02       1.127006e-02 
+
+# Subshell:
+# v_p1/2 
+#       3  # -> tot n. of quasiparticles
+       64.569272      100.000        -7.720331e-02      -1.107207e-02       5.302053e-01       8.442745e-01 
+       29.605829      100.000        -1.570891e-01       5.226215e-01       7.062331e-01      -4.510261e-01 
+        8.387328      100.000         1.052361e-01      -8.348091e-01       4.570321e-01      -2.883414e-01 
+#       1  # -> tot n. of quasiholes
+      -16.365735      100.000         9.789219e-01       1.727364e-01       1.060134e-01       2.520469e-02 
+
+# Subshell:
+# v_p3/2 
+#       3  # -> tot n. of quasiparticles
+       60.594865      100.000        -6.423154e-02      -5.378335e-02       4.982688e-01       8.629657e-01 
+       27.308224      100.000        -1.948788e-01       4.504723e-01       7.603290e-01      -4.254372e-01 
+        7.320176      100.000         1.906771e-01      -8.532102e-01       4.025175e-01      -2.713931e-01 
+#       1  # -> tot n. of quasiholes
+      -26.133366      100.000         9.599681e-01       2.573217e-01       1.077387e-01       2.528143e-02 
+
+# Subshell:
+# v_d3/2 
+#       3  # -> tot n. of quasiparticles
+       54.304538      100.000        -3.331303e-02       4.839809e-01       8.744442e-01 
+       22.642110      100.000         3.797932e-01       8.154270e-01      -4.368478e-01 
+        6.986860      100.000         9.244714e-01      -3.175552e-01       2.109770e-01 
+#       0  # -> tot n. of quasiholes
+
+        :                :                :
+        :                :                :
+    \end{verbatim}  
+\endgroup
+
+The propagator is also diagonal in the ($j \pi e$) quantum numbers and therefore splits in separate partial wave
+blocks. In details:
+\begin{itemize}
+\item The first 4 lines are of the file are comments and are not read.
+\item Line 5 reports the total number of partial wave blocks to be read and the maximum number
+     of different orbits for each block  (that is, the dimension of the largest block in the model space). These numbers {\em must}
+     be the same as the corresponding values for the associated model space.  A trailing `\verb+#+' 
+     character is expected. 
+     \\
+     The third number is
+     an advanced feature  to provide extra information and ot is normally not needed. This number should not
+     be given at all or set to zero (`\verb+0+'). If \bcd cannot read it it automatically sets it to 
+     zero (and one doesn't need to worry any further).
+\item Lines 6-7 are comments.
+\item Line 8 gives the total number of quasiparticle and quasihole poles contained in the file. \bcd checks that these 
+     are consistent with the content of the file and gives a warning  if they are not.
+\item After a blank line, there must be a series of blocks describing each separate partial wave. These block are separated
+     by a blank line and must come {\em exactly} in the same ordered as they are listed in the model space file (see section
+     \ref{sec:mspfiles}). 
+\item For each partial wave block:
+\begin{itemize}
+\item The first two lines are comments, e.g. giving a human readable description of the partial wave.
+\item The 3$^{\rm rd}$ line gives the numbers of quasiparticle poles for this given partial wave 
+       (trailing `\verb+#+' expected).
+\item The following lines list the quasiparticle fragments (one on each line), listing the fragment's energy,
+       the spectroscopic factor (in \%) and the spectroscopic amplitudes:
+       $$
+	\varepsilon^+_n \qquad   \qquad   Z^+_n  \qquad   \qquad   
+	       {\cal X}^n_\alpha \qquad   {\cal X}^n_{\alpha '} 
+	        \qquad   {\cal X}^n_{\alpha ''}  \qquad   {\cal X}^n_{\alpha '''} \quad \ldots
+       $$
+       The amplitudes ${\cal X}^n_\alpha$ for the same fragment depend on the single particle orbit (specifically, 
+       its principal quantum number $n_\alpha$) and {\em must} follow the same order given in the model
+       space description (see section  \ref{sec:mspfiles}). 
+\item The next line gives the numbers of quasihole poles for this given partial wave 
+       (trailing `\verb+#+' expected).
+\item The following lines list the quasiparticle fragments (one on each line), listing the fragment's energy,
+       the spectroscopic factor (in \%) and the spectroscopic amplitudes:
+       $$
+	\varepsilon^-_k \qquad   \qquad   Z^-_k  \qquad   \qquad   
+	       {\cal Y}^k_\alpha \qquad   {\cal Y}^k_{\alpha '} 
+	        \qquad   {\cal Y}^k_{\alpha ''}  \qquad   {\cal Y}^k_{\alpha '''} \quad \ldots
+       $$
+       Likewise, the amplitudes ${\cal Y}^n_\alpha$ for the same fragment depend on the single particle orbit 
+       and must come  exactly in the same order as in the associated model space.
+\end{itemize}
+\end{itemize}
+
+Be warned that, within each block, it is {\em very important} that the number of quasiparticle and quasi hole poles
+stated at the beginning of the list correspond to the exact number of poles listed in the following lines. If any of these
+values is wrong, it will result in wrong execution of the program and most likely in a segmentation fault
+(a beginner user may want to experiment with a wrong input once or twice to learn recognising this situation,
+should it occur in the future...).
+
+Spectroscopic factors are obtained by integrating the squared spectroscopic amplitudes over the single 
+particle basis and are intended here as percentage of the independent particle model (or mean-field) value:
+\begin{equation}
+   Z^+_n [\%] = 100 \times \sum_\alpha |   {\cal X}^n_\alpha |^2  \; ,  \qquad \quad 
+   Z^-_k[\%]  =  100 \times \sum_\alpha |   {\cal Y}^k_\alpha |^2 \; .
+\end{equation}
+Note that the values in this file are mostly for output information, while the spectroscopic amplitudes 
+are those actually used to performing calculations.  The set of values $\{Z^+$,${\cal X}\}$ and $\{Z^-$,${\cal Y}\}$ 
+given as input should in principle be consistent but \bcd does not normally check this: it simply reads in all the 
+value values and then carries on without controlling nor recalculating the  $Z^+$/$Z^-$ values. If the latter are
+given wrongly, this has not effects in most of the cases but there is no guarantee of this.
+
+
+
+\section{Interactions data files}
+\label{sec:vfiles}
+
+The matrix elements for a two-body interaction are passed  through the command option 
+\verb+Vpp=filename+. \bcd has two native file formats for the two-body interaction that allow
+to give the matrix elements as a (human readable) text file or through a binary file (which is 
+less versatile but more compact and allows for faster disk I/O). The code distinguishes between
+different types of formats based on the file extension: \verb+.bcd+ or \verb+.dat+ for the 
+text format and  \verb+.bin+ is for the binary format. The command option  \verb+ConvVpp=newfile.ext+
+allows to convert files from one format to another.
+
+In addition to the native formats, \bcd can accept two-body matrix elements files in other formats.
+In particular,  matrix elements generated by the CENS codes, written by M. Hjorth-Jensen at Oslo,
+can be read through files ending with the extension \verb+.mhj+.
+%In addition to the native formats, \bcd can accept two-body matrix elements files in other formats
+%used within the nuclear theory community. These are as follows:
+%\begin{itemize}
+%\item The extension \verb+.mhj+  reads matrix elements generated by the CENS codes
+%	written by M. Hjorth-Jensen at Oslo. This is the format also used by the 
+%	Oak-Ridge collaboration.
+%\item The extension \verb+.nav+ reads interaction files in the format used by the Livermore/TRIUMF
+%         no-core shell model collaborations.
+%\item The extension \verb+.ant+ reads shell-model effective interactions in the format used
+%         by the \verb+ANTOINE+ code, by E. Caurier.  Beware that this is of very limited use
+%         since \bcd is inherently a software for {\em no-core} calculations and not intended for
+%         calculation in model spaces of with a small number of shells.
+%\end{itemize}
+
+Interaction files in the format used by the $V_{UCOM}$ collaboration in Darmstadt are not supported
+by \bcd. However there exist a separate program that performs the conversion into the \verb+.bcd+
+format (contact me if interested).
+
+
+\subsection{Native \bcd interaction files ({\tt .bcd} and {\tt .bin})}
+
+  Text  files with either  \verb+.bcd+ or \verb+.dat+ extension must contain two-body
+matrix elements in {\em properly normalised} J-coupled and proton-neutron form. For
+each matrix element the {\em values} of each relevant quantum number  (and not their order in
+the model space file) have to be used so that the same interaction can be read completely independently 
+of the details of the  model space file being inputted  (see section \ref{sec:mspfiles}).
+
+Precisely, the matrix elements must be coupled to total angular momentum $J$ and normalised
+as follows:
+\begin{multline}
+\bar{v}^J_{\alpha\beta,\gamma\delta} =
+  \frac{1}{\sqrt{1+\delta_{\alpha\beta}}}
+   \frac{1}{\sqrt{1+\delta_{\beta\delta}}}
+ \sum_{m_\alpha m_\beta m_\gamma m_\delta} 
+ (j_\alpha \; j_\beta \; m_\alpha \; m_\beta | J M) 
+  \\
+ \qquad \qquad  \times 
+\langle \alpha m_\alpha \beta m_\beta | \hat{V}| \gamma m_\gamma \delta m_\delta \rangle 
+ (j_\gamma\; j_\delta\; m_\gamma \; m_\delta| J M)
+\; ,
+\label{eq:Vbar_defn}
+\end{multline}
+where the anti-symmetrized matrix elements are calculated for the model space orbits $\phi_{\alpha m_\alpha}({\bf x}_1)$
+according to [${\bf x}\equiv(\vec{r}, s, \tau)$ labels the spatial, spin and isospin coordinates]:
+\begin{multline}
+%\begin{equation}
+\langle \alpha m_\alpha \beta m_\beta | \hat{V}| \gamma m_\gamma \delta m_\delta \rangle 
+= \int d{\bf x}_1 \int d{\bf x}_2 \int d{\bf x}_3 \int d{\bf x}_4   \\
+\phi_{\alpha m_\alpha}^*({\bf x}_1) \phi_{\beta m_\beta}^*({\bf x}_2)
+\hat{V}
+[\phi_{\gamma m_\gamma}({\bf x}_3) \phi_{\delta m_\delta}({\bf x}_4)
+-\phi_{\delta m_\delta}({\bf x}_3) \phi_{\gamma m_\gamma}({\bf x}_4) ] 
+\; .
+\label{eq:Vas_defn}
+%\end{equation}
+\end{multline}
+
+When working with spherical harmonic oscillator bases, \bcd assumes the phase convention that $\phi_{nl}(r)>0$ for $r\rightarrow0$ in coordinate space (or $\tilde{\phi}_{nl}(k) \sim (-1)^n$ at small $k$ in momentum space). This is the most widely used convention and it is needed only to calculate the matrix elements of the kinetic energy and response functions in ph-RPA calculations. In principle, one could use any convention for the two-body matrix elements but then the correct matrix elements of the kinetic energy have also to be provided by the user as an external one-body operator.
+
+The \verb+.bcd+ file containing the two-body matrix elements must have the following format:
+\begingroup    \color{OliveGreen}
+    \fontsize{11pt}{12pt}\selectfont
+\begin{verbatim}
+ 1358286 1500000  # tot number of mtx el. stored and to be allocated; ...
+0 1 0 0 0 1 0 0  0 1 0 0 0 1 0 0  0 -6.5369194750
+0 1 0 0 0 1 0 0  0 1 0 0 1 1 0 0  0 -3.7886995480
+0 1 0 0 0 1 0 0  0 1 0 0 2 1 0 0  0 -1.3750089480
+0 1 0 0 0 1 0 0  0 1 0 0 3 1 0 0  0 -0.4418042008
+   :       :        :      :      :       :
+   :       :        :      :      :       :
+\end{verbatim} 
+\endgroup
+The two integer numbers in the first line specify the total number of lines in the file that have to be read (one line for 
+each matrix element) and the total number of memory locations to be allocated in RAM for the two-body
+interaction. Hence, it is possible to reserve more space in memory than it is actually needed to store all the 
+matrix elements on file. This option is useful in cases when one wants to first load one interaction  and then add
+new matrix elements corresponding to configurations that are not present in the initial file.   If \bcd cannot read the number
+of slots to be allocated (e.g., the file provides only the first number) or if this is too small, it will still allocate as many
+slots as the matrix elements present in the file.
+
+Each of the following lines provides a matrix elements  together with the all relevant  quantum numbers in
+the following format:
+$$
+n_\alpha ~ 2j_\alpha ~ \pi_\alpha ~ e_\alpha ~~~
+n_\beta   ~ 2j_\beta   ~ \pi_\beta   ~ e_\beta
+~~~~
+n_\gamma ~ 2j_\gamma ~~ \pi_\gamma ~~ e_\gamma ~~~
+n_\delta   ~ 2j_\delta  ~~ \pi_\delta   ~~ e_\delta
+~~~~
+J  ~~~ \bar{v}^J_{\alpha\beta,\gamma\delta}
+$$
+Thus, the first element in the example above is between four neutrons all in the $0s_{1/2}$ state and coupled to total angular momentum J=0. The second element has two $0s_{1/2}$ neutrons on one side and one $0s_{1/2}$ plus one $1s_{1/2}$ neutron on the other side.  The matrix elements do not need to be in any particular order, \bcd will sort them after reading the file.
+
+The J-coupled matrix elements in Eq.~(\ref{eq:Vbar_defn}) are hermitian and antisymmetric in the exchange of two nucleons
+[that is: $\bar{v}^J_{\alpha\beta,\gamma\delta}$ =$(-1)^{1+ j_\alpha + j_\beta - J}\bar{v}^J_{\beta\alpha,\gamma\delta}$ =$(\bar{v}^J_{\gamma\delta, \alpha\beta})^*$], so that not all configurations are independent. Of all these configuration only one need to be included in the file.
+It is responsibility of the user to ensure that this is done correctly.
+%
+After reading matrix elements from the  \verb+.bcd+ file, \bcd can perform some tests to find out whether  some configurations
+have been inputted twice or not all the possible configurations are included. If so, it gives warnings. 
+However, keep in mind that these are quick and rough checks and they are not fail-proof.
+
+\vskip 1.cm
+
+ The binary interactions files can be generated by first reading an interaction and then converting it as follows:
+\begingroup \color{blue}
+    \fontsize{11pt}{12pt}\selectfont
+\begin{verbatim}
+> BcDor Trel=0 MdSp=msp_file Vpp=filename_in.bcd ConvVpp=filename_out.bin
+ \end{verbatim}
+ \endgroup
+ \noindent
+This makes a binary file which is an exact image of the RAM memory used to store the interactions. Therefore, it is 
+much smaller in size and much faster to read than the corresponding text file. However, it can {\em only} be employed with exactly
+the same model space used to generate it. 
+
+\subsection{Matrix elements for Coulomb and center of mass corrections}
+
+There are a number of auxiliary files that are used to add the Coulomb matrix elements (option `\verb+Vc+', if the nuclear potential does {\em not} already contain Coulomb), to correct for the center of mass kinetic energy (options `\verb+Trel=+',  `\verb+Trel_pipj=+' and  `\verb+Trel_2body=+') and to correct for the center of mass motion when calculating rms radii (options `\verb+Radii=+' and `\verb+Rrms=+'). All these files are in  \verb+.bcd+ format and are expected to contain matrix elements appropriately rescaled by the harmonic oscillator length or frequency. Thus, only one set of matrix elements is needed when working with spherical harmonic oscillator bases. Different bases can of course be used but that would require calculating the relevant auxiliary matrix elements case by case.
+
+If you are making calculations in a spherical harmonic oscillator basis, use the files given in the folder \verb+datafiles+. That is all you need.
+
+
+
+%\subsection{Non standard formats}
+\subsection{Interaction files from the CENS pakage}
+
+The {\em computing environment for nuclear structure} (CENS) is a set of codes for effective interactions
+and shell-model calculations developed at the university of Oslo, available at
+{\tt http://folk.uio.no/mhjensen/cp/software.html}.
+This also contains software to generate matrix elements of realistic nuclear forces, both bare and renormalised
+(G-matrix, free space SRG, Lee-suzuki, etc...).
+
+The CENS \verb+vrenorm+ code normally generates two files, one with a table for the model space  and one with the corresponding  matrix elements. The \hbox{\bcd's} \verb+.mhj+ format must contain both of these concatenated. For example, if the model space file generated by CENS is \verb+spdata_file.dat+ and the interaction file 
+is \verb+vint.dat+ one should create the input file as
+\begingroup \color{blue}
+   \fontsize{11pt}{12pt}\selectfont
+\begin{verbatim}
+> cat    spdata_file.dat  vint.dat  >  interaction_file.mhj
+ \end{verbatim}
+ \endgroup \noindent
+which can then be used by \bcd:
+\begingroup  \color{blue}
+   \fontsize{11pt}{12pt}\selectfont
+\begin{verbatim}
+> BcDor   MdSp=msp_file   Vpp=interaction_file.mhj  ...
+ \end{verbatim}
+ \endgroup \noindent
+This procedure works correctly with the CENS distribution as of April 2015.
+
+\vskip .3 cm
+
+Keep in mind that the model space used in the calculation is \verb+msp_file+ and {\em not} \verb+spdata_file.dat+.  \bcd reads the latter through 
+the \verb+.mhj+ file and the uses it only to import the matrix elements and to match them to its standard model space (\verb+msp_file+
+in this example). Sometimes CENS is used to generate matrix elements of a G-matrix at different energies. In this cases \bcd reads
+all sets of matrix elements and then one wants to use the `\verb+SelInt=i+' option (with \verb+i=0,1,2,...+) to chose a particular starting energy. For example,
+
+\begingroup \color{blue}
+  \fontsize{10pt}{12pt}\selectfont
+\begin{verbatim}
+> BcDor Trel=0 MdSp=msp_file Vpp=Gmatrix_file.mhj SelInt=2 ConvVpp=Gmtx_Exx.bcd 
+ \end{verbatim}
+ \endgroup
+
+ \noindent
+ reads the G-matrix for the 3$^{\rm rd}$ starting energy stored in  \verb+Gmatrix_file.mhj+ and casts it in a native \verb+.bcd+ file.
+
+
+
+\input{BcDorAdvancedManual.tex}
+
+
+
+\chapter*{Software Licence}
+\addcontentsline{toc}{chapter}{Software Licence}  
+
+
+  The public distribution of the \bcd is available at the following webpage:
+\verb+http://personal.ph.surrey.ac.uk/~cb0023/bcdor+ \\
+The code is meant for
+performing microscopic calculations with Green's function and coupled cluster
+theory for finite nuclei and with modern realistic interactions.
+  This is freely distributed software and you are welcome to use it for your
+own research and teaching, provided you abide to the following conditions:
+
+\begin{itemize}
+\item The software is provided as it is, without any guarantee or commitment
+  for support.
+ 
+\item You are welcome to use and redistribute this software, as long as it is
+  distributed as a whole and this page is always included and unmodified 
+  from its original version.  If the software is redistributed with any
+  modification form its original form, this should be clearly stated.
+ 
+\item Any publication resulting from the use of the codes contained in this 
+  distribution should acknowledge their use. If a modified version of the software
+  has been used, this should be mentioned.
+
+\item When using the software for research purposes, I kindly ask you to consider 
+  referring to any of the publications which led its development:\\
+   Prog. Part. Nucl. Phys. {\bf 52}, p. 377 (2004),\\
+   Phys. Rev. {\bf A76}, 052503 (2007),\\
+   Phys. Rev. {\bf C79}, 064313 (2009),\\
+   Phys. Rev. {\bf C89}, 024323 (2014).
+\end{itemize}
+
+\vskip 1cm
+\noindent
+\copyright ~ Carlo Barbieri, Surrey, July 2015.
+
+
+\end{document}

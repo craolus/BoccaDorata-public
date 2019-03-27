@@ -1,0 +1,107 @@
+
+
+
+\chapter{Features of the unpublished Code}
+%\addcontentsline{toc}{chapter}{Features of the Unpublished Code}  
+\label{ch:privatecode}
+
+
+\section{Further file formats}
+
+
+\subsection{Three-nucleon force }
+\label{sec:3NFfiles}
+
+
+Matrix elements for three-body interations (TBI) are stored in unformatted binary data files as single
+precision numbers and are expected to be coupled to total angular momentum and isospin (i.e. we use
+good isospin formalism and {\em not} the proton-neutron format for the TBI).  The matrix elements must also
+be fully antisimmetrized but {\em not normalised}.
+
+Thus, the full expression used for coupling the TBI elements in total angular momentum $J$ and isospin $T$ is 
+\begin{multline}
+{w}^{J \; T}_{\alpha \beta J_{ab} T_{ab} \gamma \, , \; \mu \nu J_{mv} T_{mv} \lambda} =
+ \sum_{ m_\alpha m_\beta m_\gamma M_{a b} } ~
+ \sum_{ m_\mu m_\nu m_\lambda M_{m v} } ~
+ \sum_{ \tau_\alpha \tau_\beta \tau_\gamma T^z_{a b} } ~
+ \sum_{ \tau_\mu \tau_\nu \tau_\lambda T^z_{m v} } ~
+ \\  
+   (j_\alpha \; j_\beta \; m_\alpha \; m_\beta | J_{ab} M_{a b})  \;
+   (J_{ab} \; j_\gamma \; M_{a b} \; m_\gamma | J M)        \qquad \qquad 
+  \\    
+  (\frac12 \; \frac12 \; \tau_\alpha \; \tau_\beta | T_{ab} T^z_{a b})   \;
+   (T_{ab} \; \frac12 \; T^z_{a b} \; \tau_\gamma | T T_z)     \qquad \qquad 
+   \\  \qquad  \qquad 
+   \langle \alpha m_\alpha \tau_\alpha \; \beta m_\beta \tau_\beta  \; \gamma m_\gamma \tau_\gamma
+                      | \hat{W}| \mu m_\mu \tau_\mu \; \nu m_\nu \tau_\nu \; \lambda m_\lambda \tau_\lambda \rangle 
+   \\  \qquad  \qquad  \qquad
+   (j_\mu \; j_\nu \; m_\mu \; m_\nu | J_{mv} M_{m v}) 
+   (J_{m v} \; j_\lambda \; M_{m v} \; m_\lambda | J M) 
+  \\    \qquad    \qquad \qquad  
+   (\frac12 \; \frac12 \; \tau_\mu \; \tau_\nu | T_{m v}  T^z_{m v}) 
+   (T_{m v} \; \frac12 \; T^z_{m v} \; \tau_\lambda | T T_z) 
+\; ,  \quad  
+\label{eq:wJ_defn}
+\end{multline}
+where the greek indices, $\alpha \equiv (n_\alpha, j_\alpha, \pi_\alpha)$, here refer to just the principal quantum number, total angular momentum and parity of the sigle particle basis (since the isospin variale are also coupled now). The matrix elements in Eq.~\eqref{eq:wJ_defn} must be anti-symmetrized and they are calculated for the model space orbits $\phi_{\alpha m_\alpha \tau_\alpha}({\bf x}_1)$
+according to [${\bf x}\equiv(\vec{r}, s, \tau)$ labels the spatial, spin and isospin coordinates as usual]:
+\begin{multline}
+%\begin{equation}
+ \langle \alpha m_\alpha \tau_\alpha \; \beta m_\beta \tau_\beta  \; \gamma m_\gamma \tau_\gamma
+        | \hat{W}| \mu m_\mu \tau_\mu \; \nu m_\nu \tau_\nu \; \lambda m_\lambda \tau_\lambda \rangle
+   =    \\
+  \quad   \int d{\bf x}_1 \int d{\bf x}_2 \int d{\bf x}_3 \int d{\bf x}_4   \int d{\bf x}_5 \int d{\bf x}_6   ~~
+\phi_{\alpha m_\alpha \tau_\alpha}^*({\bf x}_1) \phi_{\beta m_\beta \tau_\beta}^*({\bf x}_2) \phi^*_{\gamma m_\gamma \tau_\gamma}({\bf x}_3)
+\, \hat{W}  \\
+\quad \times  \; 
+\left[ \phi_{\mu m_\mu \tau_\mu}({\bf x}_4) \phi_{\nu m_\nu \tau_\nu}({\bf x}_5)  \phi_{\lambda m_\lambda \tau_\lambda}({\bf x}_6)  ~-~
+        \phi_{\mu m_\mu \tau_\mu}({\bf x}_4) \phi_{\nu m_\nu \tau_\nu}({\bf x}_6)  \phi_{\lambda m_\lambda \tau_\lambda}({\bf x}_5) \right.  \\
+\quad ~+~ \phi_{\mu m_\mu \tau_\mu}({\bf x}_5) \phi_{\nu m_\nu \tau_\nu}({\bf x}_6)  \phi_{\lambda m_\lambda \tau_\lambda}({\bf x}_4)  ~-~
+        \phi_{\mu m_\mu \tau_\mu}({\bf x}_5) \phi_{\nu m_\nu \tau_\nu}({\bf x}_4)  \phi_{\lambda m_\lambda \tau_\lambda}({\bf x}_6)   \\
+\quad \left.~+~ \phi_{\mu m_\mu \tau_\mu}({\bf x}_6) \phi_{\nu m_\nu \tau_\nu}({\bf x}_4)  \phi_{\lambda m_\lambda \tau_\lambda}({\bf x}_5)  ~-~
+        \phi_{\mu m_\mu \tau_\mu}({\bf x}_6) \phi_{\nu m_\nu \tau_\nu}({\bf x}_5)  \phi_{\lambda m_\lambda \tau_\lambda}({\bf x}_4) \right] .
+\label{eq:Was_defn}
+%\end{equation}
+\end{multline}
+
+The matrix elements calculated according to Eqs~\eqref{eq:wJ_defn} %and~\eqref{eq:Was_defn}
+are stored in an unformatted FORTRAN-type file in a precise order and truncated according to the 
+maximum major-shell number for a single state ($N_max$), a pair ($E^{12}_{max}$) and a triplet ($E^{123}_{max}$)
+of spherical  harmonic oscillator states. In principle, these orbits do not need to be 
+harmonic oscillator states (for example, if a different basis set is used) but they have to be spherical
+single particle states and have analogous quantum numbers as the HO case.
+
+One first order the single particle basis in increasing values of of the shell quandum number
+$N_a \equiv 2 n_a + \ell_a$. For each value of $N_a$, orbits are ordered in increasing angular
+momentum $\ell_a$ and with total angular momentum \hbox{$j^-_a=\ell_a-\frac12$} coming before  $j^+_a=\ell_a+\frac12$.
+
+\begin{align}
+ i_\alpha   &   \quad &      &  \quad  &  N_\alpha  &    & \ell_\alpha  &    & 2j_\alpha &    & (n_\alpha) &    & (\pi_\alpha) & \qquad \qquad  \nonumber \\
+  1     & &\rightarrow& &0  & &  0  & &  1  & &  0  & &  0  & & \nonumber\\
+  2     & &\rightarrow& &1  & &  1  & &  1  & &  0  & &  1  & & \nonumber\\
+  3     & &\rightarrow& &1  & &  1  & &  3  & &  0  & &  1  & & \nonumber\\
+  4     & &\rightarrow& &2  & &  0  & &  1  & &  1  & &  0  & & \nonumber\\
+  5     & &\rightarrow& &2  & &  2  & &  3  & &  0  & &  0  & & \nonumber\\
+  6     & &\rightarrow& &2  & &  2  & &  5  & &  0  & &  0  & & \nonumber\\
+  7     & &\rightarrow& &3  & &  1  & &  1  & &  1  & &  1  & & \nonumber\\
+  8     & &\rightarrow& &3  & &  1  & &  3  & &  1  & &  1  & & \nonumber\\
+  9     & &\rightarrow& &3  & &  3  & &  5  & &  0  & &  1  & & \nonumber\\
+ 10     & &\rightarrow& &3  & &  3  & &  7  & &  0  & &  1  & & \nonumber\\
+ 11     & &\rightarrow& &4  & &  0  & &  1  & &  2  & &  0  & & \nonumber\\
+ 12     & &\rightarrow& &4  & &  2  & &  3  & &  1  & &  0§  & & \\
+  &\hbox{etc...} &&   \nonumber
+\end{align}
+
+Appendix~\ref{app:TBI_files} contains an example of FORTAN and C/C++ source code that can generate TBI files according to the conventions above.
+
+
+
+\subsection{One-Body Density Matrix}
+\label{sec:OBDM}
+
+
+\appendix 
+\chapter{Code for generating TBI files}
+\label{app:TBI_files}
+
+

@@ -1,0 +1,479 @@
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.8.4)  20 NOV 2015 22:07
+entering extended mode
+ \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**BcDorManual.tex
+(./BcDorManual.tex
+LaTeX2e <2011/06/27>
+Babel <3.9f> and hyphenation patterns for 78 languages loaded.
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2013/texmf-dist/tex/latex/base/size12.clo
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/tools/bm.sty
+Package: bm 2004/02/26 v1.1c Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup4
+\symboldletters=\mathgroup5
+\symboldsymbols=\mathgroup6
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 138.
+LaTeX Info: Redefining \bm on input line 204.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count88
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2013/01/14 v2.14 AMS math features
+\@mathmargin=\skip43
+
+For additional information on amsmath, use the `?' option.
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks15
+\ex@=\dimen105
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+LaTeX Info: Redefining \boldsymbol on input line 39.
+\pmbraise@=\dimen106
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count89
+LaTeX Info: Redefining \frac on input line 210.
+\uproot@=\count90
+\leftroot@=\count91
+LaTeX Info: Redefining \overline on input line 306.
+\classnum@=\count92
+\DOTSCASE@=\count93
+LaTeX Info: Redefining \ldots on input line 378.
+LaTeX Info: Redefining \dots on input line 381.
+LaTeX Info: Redefining \cdots on input line 466.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen107
+LaTeX Font Info:    Redeclaring font encoding OML on input line 566.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 567.
+\macc@depth=\count94
+\c@MaxMatrixCols=\count95
+\dotsspace@=\muskip10
+\c@parentequation=\count96
+\dspbrk@lvl=\count97
+\tag@help=\toks16
+\row@=\count98
+\column@=\count99
+\maxfields@=\count100
+\andhelp@=\toks17
+\eqnshift@=\dimen108
+\alignsep@=\dimen109
+\tagshift@=\dimen110
+\tagwidth@=\dimen111
+\totwidth@=\dimen112
+\lineht@=\dimen113
+\@envbody=\toks18
+\multlinegap=\skip44
+\multlinetaggap=\skip45
+\mathdisplay@stack=\toks19
+LaTeX Info: Redefining \[ on input line 2665.
+LaTeX Info: Redefining \] on input line 2666.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Package option `usenames' ignored on input line 216.
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+LaTeX Info: Redefining \color on input line 702.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2008/02/07
+
+Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
+<2008/02/07> (tvz)
+\FV@CodeLineNo=\count101
+\FV@InFile=\read1
+\FV@TabBox=\box28
+\c@FancyVerbLine=\count102
+\FV@StepNumber=\count103
+\FV@OutFile=\write3
+) (./BcDorManual.aux
+
+LaTeX Warning: Label `eq:gsp_leh' multiply defined.
+
+
+LaTeX Warning: Label `eq:gsp_leh' multiply defined.
+
+)
+\openout1 = `BcDorManual.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
+LaTeX Font Info:    ... okay on input line 20.
+ (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count104
+\scratchdimen=\dimen114
+\scratchbox=\box29
+\nofMPsegments=\count105
+\nofMParguments=\count106
+\everyMPshowfont=\toks20
+\MPscratchCnt=\count107
+\MPscratchDim=\dimen115
+\MPnumerator=\count108
+\makeMPintoPDFobject=\count109
+\everyMPtoPDFconversion=\toks21
+) (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+[1
+
+{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+(./BcDorManual.toc)
+\tf@toc=\write4
+\openout4 = `BcDorManual.toc'.
+
+ [2
+
+] [3
+
+] [4]
+Chapter 1.
+Missing character: There is no Ô in font cmr12!
+Missing character: There is no Õ in font cmr12!
+
+Underfull \hbox (badness 10000) in paragraph at lines 114--121
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 114--121
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 114--121
+
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [5
+
+]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 213.
+
+[6]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [7]
+[8] [9] [10] [11] [12]
+Overfull \hbox (26.3953pt too wide) in paragraph at lines 577--581
+\OT1/cmr/m/n/12 At this point it is in-struc-tive to in-spect the two prop-a-ga
+-tor files `[]\OT1/cmtt/m/n/12 sp_prop_O16_2nd\OT1/cmr/m/n/12 '
+ []
+
+
+Overfull \hbox (8.5683pt too wide) in paragraph at lines 605--607
+\OT1/cmr/m/n/12 where we ob-tain [] for the to-tal en-ergy in the []
+ []
+
+Missing character: There is no Ñ in font cmtt10!
+[13]
+Chapter 2.
+[14
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 756.
+
+ (/usr/local/texlive/2013/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 756.
+ [15]
+[16] [17]
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]       \OT1/cmtt/m/n/8 48.340786      100.000        -1.082472e-02      -1.14
+3617e-01       4.154943e-01       9.023130e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]       \OT1/cmtt/m/n/8 17.932187      100.000        -1.192554e-01       2.05
+9822e-01       8.913622e-01      -3.857757e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]       \OT1/cmtt/m/n/8 -0.108800      100.000         2.451556e-01      -9.35
+6775e-01       1.659063e-01      -1.920454e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]      \OT1/cmtt/m/n/8 -57.898314      100.000         9.620601e-01       2.62
+6792e-01       7.288995e-02       1.127006e-02[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]       \OT1/cmtt/m/n/8 64.569272      100.000        -7.720331e-02      -1.10
+7207e-02       5.302053e-01       8.442745e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]       \OT1/cmtt/m/n/8 29.605829      100.000        -1.570891e-01       5.22
+6215e-01       7.062331e-01      -4.510261e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]        \OT1/cmtt/m/n/8 8.387328      100.000         1.052361e-01      -8.34
+8091e-01       4.570321e-01      -2.883414e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]      \OT1/cmtt/m/n/8 -16.365735      100.000         9.789219e-01       1.72
+7364e-01       1.060134e-01       2.520469e-02[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]       \OT1/cmtt/m/n/8 60.594865      100.000        -6.423154e-02      -5.37
+8335e-02       4.982688e-01       8.629657e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]       \OT1/cmtt/m/n/8 27.308224      100.000        -1.948788e-01       4.50
+4723e-01       7.603290e-01      -4.254372e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]        \OT1/cmtt/m/n/8 7.320176      100.000         1.906771e-01      -8.53
+2102e-01       4.025175e-01      -2.713931e-01[] 
+ []
+
+
+Overfull \hbox (64.75653pt too wide) in paragraph at lines 915--915
+[]      \OT1/cmtt/m/n/8 -26.133366      100.000         9.599681e-01       2.57
+3217e-01       1.077387e-01       2.528143e-02[] 
+ []
+
+[18] [19] [20] [21]
+Overfull \hbox (29.6542pt too wide) in paragraph at lines 1070--1070
+[] \OT1/cmtt/m/n/10.95 1358286 1500000  # tot number of mtx el. stored and to b
+e allocated; ...[] 
+ []
+
+[22]
+Overfull \hbox (29.6542pt too wide) in paragraph at lines 1108--1108
+[]\OT1/cmtt/m/n/10.95 > BcDor Trel=0 MdSp=msp_file Vpp=filename_in.bcd ConvVpp=
+filename_out.bin[] 
+ []
+
+[23]
+Overfull \hbox (24.74638pt too wide) in paragraph at lines 1160--1160
+[]\OT1/cmtt/m/n/10 > BcDor Trel=0 MdSp=msp_file Vpp=Gmatrix_file.mhj SelInt=2 C
+onvVpp=Gmtx_Exx.bcd[] 
+ []
+
+(./BcDorAdvancedManual.tex [24]
+Chapter 3.
+[25
+
+]
+Overfull \hbox (10.59546pt too wide) detected at line 65
+ []$[]  [] \OML/cmm/m/it/12 d\OT1/cmr/bx/n/12 x[] [] \OML/cmm/m/it/12 d\OT1/cmr
+/bx/n/12 x[] [] \OML/cmm/m/it/12 d\OT1/cmr/bx/n/12 x[] [] \OML/cmm/m/it/12 d\OT
+1/cmr/bx/n/12 x[] [] \OML/cmm/m/it/12 d\OT1/cmr/bx/n/12 x[] [] \OML/cmm/m/it/12
+ d\OT1/cmr/bx/n/12 x[] [] []\OML/cmm/m/it/12 ^^^[]\OT1/cmr/m/n/12 (\OT1/cmr/bx/
+n/12 x[]\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ^^^[]\OT1/cmr/m/n/12 (\OT1/cmr/bx/n/1
+2 x[]\OT1/cmr/m/n/12 )\OML/cmm/m/it/12 ^^^[]\OT1/cmr/m/n/12 (\OT1/cmr/bx/n/12 x
+[]\OT1/cmr/m/n/12 ) []$ 
+ []
+
+
+Overfull \hbox (16.34041pt too wide) detected at line 65
+ []$[]  [] \OML/cmm/m/it/12 :$ []  
+ []
+
+Missing character: There is no § in font cmr12!
+Missing character: There is no § in font cmr12!
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [26]
+[27]
+Appendix A.
+) [28
+
+] [29
+
+] (./BcDorManual.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 3192 strings out of 493315
+ 43191 string characters out of 6137905
+ 130914 words of memory out of 5000000
+ 6585 multiletter control sequences out of 15000+600000
+ 19445 words of font info for 69 fonts, out of 8000000 for 9000
+ 957 hyphenation exceptions out of 8191
+ 38i,14n,35p,834b,307s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
+></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pf
+b></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
+></usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb>
+</usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></
+usr/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></us
+r/local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
+local/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/lo
+cal/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
+/texlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
+xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/local/tex
+live/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texl
+ive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texliv
+e/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/
+2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2
+013/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/20
+13/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/201
+3/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2013
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb>
+Output written on BcDorManual.pdf (29 pages, 285727 bytes).
+PDF statistics:
+ 174 PDF objects out of 1000 (max. 8388607)
+ 122 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+

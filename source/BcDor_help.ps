@@ -1,0 +1,800 @@
+%!PS-Adobe-3.0
+%%Title: stdin
+%%For: Dr Carlo Barbieri
+%%Creator: a2ps version 4.14
+%%CreationDate: Wed Mar 27 15:48:18 2019
+%%BoundingBox: 24 24 571 818
+%%DocumentData: Clean7Bit
+%%Orientation: Landscape
+%%Pages: 3
+%%PageOrder: Ascend
+%%DocumentMedia: A4 595 842 0 () ()
+%%DocumentNeededResources: font Courier
+%%+ font Courier-Bold
+%%+ font Courier-BoldOblique
+%%+ font Courier-Oblique
+%%+ font Helvetica
+%%+ font Helvetica-Bold
+%%+ font Symbol
+%%+ font Times-Bold
+%%+ font Times-Roman
+%%DocumentProcessColors: Black 
+%%DocumentSuppliedResources: procset a2ps-a2ps-hdr
+%%+ procset a2ps-black+white-Prolog
+%%+ encoding ISO-8859-1Encoding
+%%EndComments
+/a2psdict 200 dict def
+a2psdict begin
+%%BeginProlog
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+
+% EPSF import as in the Red Book
+/BeginInclude {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack 
+  userdict begin
+    0 setgray 0 setlinecap
+    1 setlinewidth 0 setlinejoin
+    10 setmiterlimit [ ] 0 setdash newpath
+    gs_languagelevel 1 ne {
+      false setstrokeadjust false setoverprint 
+    } if
+} bind def
+
+/EndInclude {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+/BeginEPSF {
+  BeginInclude
+  /showpage { } def
+} bind def
+
+/EndEPSF {
+  EndInclude
+} bind def
+
+% Page prefeed
+/page_prefeed {         % bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} bind def
+
+/deffont {
+  findfont exch scalefont def
+} bind def
+
+/reencode_font {
+  findfont reencode 2 copy definefont pop def
+} bind def
+
+% Function c-show (str => -)
+% centers text only according to x axis.
+/c-show { 
+  dup stringwidth pop
+  2 div neg 0 rmoveto
+  show
+} bind def
+
+% Function l-show (str => -)
+% prints texts so that it ends at currentpoint
+/l-show {
+  dup stringwidth pop neg 
+  0 
+  rmoveto show
+} bind def
+
+% center-fit show (str w => -)
+% show centered, and scale currentfont so that the width is less than w
+/cfshow {
+  exch dup stringwidth pop
+  % If the title is too big, try to make it smaller
+  3 2 roll 2 copy
+  gt
+  { % if, i.e. too big
+    exch div
+    currentfont exch scalefont setfont
+  } { % ifelse
+    pop pop 
+  }
+  ifelse
+  c-show			% center title
+} bind def
+
+% Return the y size of the current font
+% - => fontsize
+/currentfontsize {
+  currentfont /FontMatrix get 3 get 1000 mul
+} bind def
+
+% reencode the font
+% <encoding-vector> <fontdict> -> <newfontdict>
+/reencode { %def
+  dup length 5 add dict begin
+    { %forall
+      % <vector> <key> <val>
+      1 index /FID ne 
+      { def }{ pop pop } ifelse
+    } forall
+    /Encoding exch def % -
+
+    % Use the font's bounding box to determine the ascent, descent,
+    % and overall height; don't forget that these values have to be
+    % transformed using the font's matrix.
+    % We use `load' because sometimes BBox is executable, sometimes not.
+    % Since we need 4 numbers an not an array avoid BBox from being executed
+    /FontBBox load aload pop
+    FontMatrix transform /Ascent exch def pop
+    FontMatrix transform /Descent exch def pop
+    /FontHeight Ascent Descent sub def
+
+    % Get the underline position and thickness if they're defined.
+    % Use 1 if they are not defined.
+    currentdict /FontInfo 2 copy known
+    { get
+      /UnderlinePosition 2 copy % <FontInfo> /UP <FontInfo> /UP
+      2 copy known
+      { get }{ pop pop 1 } ifelse
+      0 exch FontMatrix transform exch pop
+      def % <FontInfo>
+
+      /UnderlineThickness 2 copy % <FontInfo> /UT <FontInfo> /UT
+      2 copy known
+      { get }{ pop pop 1 } ifelse
+      0 exch FontMatrix transform exch pop
+      def % <FontInfo>
+      pop % -
+    }{ pop pop
+    } ifelse
+
+    currentdict
+  end 
+} bind def
+
+% Function print line number (<string> # -)
+/# {
+  gsave
+    sx cw mul neg 2 div 0 rmoveto
+    f# setfont
+    c-show
+  grestore
+} bind def
+
+% -------- Some routines to enlight plain b/w printings ---------
+
+% Underline
+% width --
+/dounderline {
+  currentpoint
+  gsave
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    0 rlineto
+    stroke
+  grestore
+} bind def
+
+% Underline a string
+% string --
+/dounderlinestring {
+  stringwidth pop
+  dounderline
+} bind def
+
+/UL {
+  /ul exch store
+} bind def
+
+% Draw a box of WIDTH wrt current font
+% width --
+/dobox {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    stroke
+  grestore
+} bind def
+
+/BX {
+  /bx exch store
+} bind def
+
+% Box a string
+% string --
+/doboxstring {
+  stringwidth pop
+  dobox
+} bind def
+
+%
+% ------------- Color routines ---------------
+%
+/FG /setrgbcolor load def
+
+% Draw the background
+% width --
+/dobackground {
+  currentpoint
+  gsave
+    newpath
+    moveto
+    0 currentfont /Descent get currentfontsize mul rmoveto
+    dup 0 rlineto
+    0 currentfont /FontHeight get currentfontsize mul rlineto
+    neg 0 rlineto
+    closepath
+    bgcolor aload pop setrgbcolor
+    fill
+  grestore
+} bind def
+
+% Draw bg for a string
+% string --
+/dobackgroundstring {
+  stringwidth pop
+  dobackground
+} bind def
+
+
+/BG {
+  dup /bg exch store
+  { mark 4 1 roll ] /bgcolor exch store } if
+} bind def
+
+
+/Show {
+  bg { dup dobackgroundstring } if
+  ul { dup dounderlinestring } if
+  bx { dup doboxstring } if
+  show
+} bind def
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T {
+  cw mul x0 add
+  bg { dup currentpoint pop sub dobackground } if
+  ul { dup currentpoint pop sub dounderline } if
+  bx { dup currentpoint pop sub dobox } if
+  y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n {
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+/S {
+  Show
+} bind def
+
+%%BeginResource: procset a2ps-a2ps-hdr 2.0 2
+%%Copyright: (c) 1988, 89, 90, 91, 92, 93 Miguel Santana
+%%Copyright: (c) 1995, 96, 97, 98 Akim Demaille, Miguel Santana
+% Function title: prints page header.
+% <ct> <rt> <lt> are passed as argument
+/title { 
+  % 1. Draw the background
+  x v get y v get moveto
+  gsave
+    0 th 2 div neg rmoveto 
+    th setlinewidth
+    0.95 setgray
+    pw 0 rlineto stroke
+  grestore
+  % 2. Border it
+  gsave
+    0.7 setlinewidth
+    pw 0 rlineto
+    0 th neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+  % stk: ct rt lt
+  x v get y v get th sub 1 add moveto
+%%IncludeResource: font Helvetica
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  % 3. The left title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    fnfs 0.8 mul hm rmoveto
+    show			% left title
+  grestore
+  exch
+  % stk: ct ltw rt
+  % 4. the right title
+  gsave
+    dup stringwidth pop fnfs 0.8 mul add exch % leave space took on stack
+    dup
+    pw exch stringwidth pop fnfs 0.8 mul add sub
+    hm
+    rmoveto
+    show			% right title
+  grestore
+  % stk: ct ltw rtw
+  % 5. the center title
+  gsave
+    pw 3 1 roll
+    % stk: ct pw ltw rtw
+    3 copy 
+    % Move to the center of the left room
+    sub add 2 div hm rmoveto
+    % What is the available space in here?
+    add sub fnfs 0.8 mul sub fnfs 0.8 mul sub
+    % stk: ct space_left
+%%IncludeResource: font Helvetica-Bold
+  fHelvetica-Bold fnfs scalefont setfont
+    cfshow
+  grestore
+} bind def
+
+% Function border: prints virtual page border
+/border { %def
+  gsave				% print four sides
+    0 setgray
+    x v get y v get moveto
+    0.7 setlinewidth		% of the square
+    pw 0 rlineto
+    0 ph neg rlineto
+    pw neg 0 rlineto
+    closepath stroke
+  grestore
+} bind def
+
+% Function water: prints a water mark in background
+/water { %def
+  gsave
+    scx scy moveto rotate
+%%IncludeResource: font Times-Bold
+  fTimes-Bold 100 scalefont setfont
+    .97 setgray
+    dup stringwidth pop 2 div neg -50 rmoveto
+    show
+  grestore
+} bind def
+
+% Function rhead: prints the right header
+/rhead {  %def
+  lx ly moveto
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  l-show
+} bind def
+
+% Function footer (cf rf lf -> -)
+/footer {
+  fHelvetica fnfs 0.8 mul scalefont setfont
+  dx dy moveto
+  show
+
+  snx sny moveto
+  l-show
+  
+  fnx fny moveto
+  c-show
+} bind def
+%%EndResource
+%%BeginResource: procset a2ps-black+white-Prolog 2.0 1
+
+% Function T(ab), jumps to the n-th tabulation in the current line
+/T { 
+  cw mul x0 add y0 moveto
+} bind def
+
+% Function n: move to the next line
+/n { %def
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+} bind def
+
+% Function N: show and move to the next line
+/N {
+  Show
+  /y0 y0 bfs sub store
+  x0 y0 moveto
+}  bind def
+
+/S {
+  Show
+} bind def
+
+/p {
+  false UL
+  false BX
+  fCourier bfs scalefont setfont
+  Show
+} bind def
+
+/sy {
+  false UL
+  false BX
+  fSymbol bfs scalefont setfont
+  Show
+} bind def
+
+/k {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/K {
+  false UL
+  false BX
+  fCourier-Bold bfs scalefont setfont
+  Show
+} bind def
+
+/c {
+  false UL
+  false BX
+  fCourier-Oblique bfs scalefont setfont
+  Show
+} bind def
+
+/C {
+  false UL
+  false BX
+  fCourier-BoldOblique bfs scalefont setfont
+  Show 
+} bind def
+
+/l {
+  false UL
+  false BX
+  fHelvetica bfs scalefont setfont
+  Show
+} bind def
+
+/L {
+  false UL
+  false BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show 
+} bind def
+
+/str{
+  false UL
+  false BX
+  fTimes-Roman bfs scalefont setfont
+  Show
+} bind def
+
+/e{
+  false UL
+  true BX
+  fHelvetica-Bold bfs scalefont setfont
+  Show
+} bind def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier
+%%IncludeResource: font Courier-Oblique
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Times-Roman
+%%IncludeResource: font Symbol
+%%IncludeResource: font Courier-BoldOblique
+%%BeginResource: encoding ISO-8859-1Encoding
+/ISO-8859-1Encoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclam /quotedbl /numbersign /dollar /percent /ampersand /quoteright 
+/parenleft /parenright /asterisk /plus /comma /minus /period /slash 
+/zero /one /two /three /four /five /six /seven 
+/eight /nine /colon /semicolon /less /equal /greater /question 
+/at /A /B /C /D /E /F /G 
+/H /I /J /K /L /M /N /O 
+/P /Q /R /S /T /U /V /W 
+/X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore 
+/quoteleft /a /b /c /d /e /f /g 
+/h /i /j /k /l /m /n /o 
+/p /q /r /s /t /u /v /w 
+/x /y /z /braceleft /bar /braceright /asciitilde /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef 
+/space /exclamdown /cent /sterling /currency /yen /brokenbar /section 
+/dieresis /copyright /ordfeminine /guillemotleft /logicalnot /hyphen /registered /macron 
+/degree /plusminus /twosuperior /threesuperior /acute /mu /paragraph /bullet 
+/cedilla /onesuperior /ordmasculine /guillemotright /onequarter /onehalf /threequarters /questiondown 
+/Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla 
+/Egrave /Eacute /Ecircumflex /Edieresis /Igrave /Iacute /Icircumflex /Idieresis 
+/Eth /Ntilde /Ograve /Oacute /Ocircumflex /Otilde /Odieresis /multiply 
+/Oslash /Ugrave /Uacute /Ucircumflex /Udieresis /Yacute /Thorn /germandbls 
+/agrave /aacute /acircumflex /atilde /adieresis /aring /ae /ccedilla 
+/egrave /eacute /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis 
+/eth /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide 
+/oslash /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis 
+] def
+%%EndResource
+% Initialize page description variables.
+/sh 595 def
+/sw 842 def
+/llx 24 def
+/urx 818 def
+/ury 571 def
+/lly 24 def
+/#copies 1 def
+/th 20.000000 def
+/fnfs 15 def
+/bfs 9.561657 def
+/cw 5.736994 def
+
+% Dictionary for ISO-8859-1 support
+/iso1dict 8 dict begin
+  /fCourier ISO-8859-1Encoding /Courier reencode_font
+  /fCourier-Bold ISO-8859-1Encoding /Courier-Bold reencode_font
+  /fCourier-BoldOblique ISO-8859-1Encoding /Courier-BoldOblique reencode_font
+  /fCourier-Oblique ISO-8859-1Encoding /Courier-Oblique reencode_font
+  /fHelvetica ISO-8859-1Encoding /Helvetica reencode_font
+  /fHelvetica-Bold ISO-8859-1Encoding /Helvetica-Bold reencode_font
+  /fTimes-Bold ISO-8859-1Encoding /Times-Bold reencode_font
+  /fTimes-Roman ISO-8859-1Encoding /Times-Roman reencode_font
+currentdict end def
+/bgcolor [ 0 0 0 ] def
+/bg false def
+/ul false def
+/bx false def
+% The font for line numbering
+/f# /Helvetica findfont bfs .6 mul scalefont def
+/fSymbol /Symbol findfont def
+/hm fnfs 0.25 mul def
+/pw
+   cw 138.400000 mul
+def
+/ph
+   494.337664 th add
+def
+/pmw 0 def
+/pmh 0 def
+/v 0 def
+/x [
+  0
+] def
+/y [
+  pmh ph add 0 mul ph add
+] def
+/scx sw 2 div def
+/scy sh 2 div def
+/snx urx def
+/sny lly 2 add def
+/dx llx def
+/dy sny def
+/fnx scx def
+/fny dy def
+/lx snx def
+/ly ury fnfs 0.8 mul sub def
+/sx 0 def
+/tab 8 def
+/x0 0 def
+/y0 0 def
+%%EndSetup
+
+%%Page: (1) 1
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 4.015896 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+() p n
+(Input line:   -h) N
+() N
+( BoccaDorata package for many-body Green's functions \(version 1.0, compiled on Mar 27 2019 at 15:48:02\).) N
+() N
+() N
+() N
+( USAGE:) N
+() N
+(  -h                          This help ) N
+() N
+(  -v                          Version ) N
+() N
+() N
+(  WkFold[=bcdwk]              Set the working folder) N
+() N
+(  A=...                       Mass # \(if not specified, the program will ask for it\)) N
+(  N=...                       Neutron # \(if not specified, the program will ask for it\)) N
+(  Z=...                       Proton # \(if not specified, the program will ask for it\)) N
+() N
+(  bHO=...      hwHO=...       H.o. length or energy \(if none is specified, the program will ask for bHO\)) N
+() N
+(  SpProp[=sp_prop]            Input s.p. propagator file) N
+() N
+(  MdSp[=input_msp]            Model space file) N
+() N
+(  Vpp[=Vpp.bcd]               Interaction file) N
+() N
+(  SelInt=i                    When more than one interaction is loaded, it selects the interaction number 'i' \(must be i>=0\)) N
+() N
+(  Vc[=Vpp_Coul.bcd]           Add Coulomb from file \(it will divide it by the h.o. length\)  ) N
+() N
+(  AddVpp=C,Vpp_file.bcd       Add the interaction from the given file to all alredy stored 2-body force. The matrix) N
+(                             elements will be multiplied by the factor 'C'.  In case of a G-matrix \(more than a starting) N
+(                             energy\) or when several sets of interaction are present, 'Vpp_file.bcd' will be added) N
+(                             to all of them.) N
+() N
+(  Trel[=3]                    Options for adding the kinetic energy in the **harmonic oscillator** basis:) N
+(                               0  no correction for c.m. motion) N
+(                               1  ti*\(A-1\)/A + 2b\(pi*pj\)  kinetic energy  \(the 2b part must be already included in the interaction file\)) N
+(                               2  2b\(\(pi-pj\)^2\) form of   the kin. energy \(the 2b part must be already included in the interaction file\)) N
+(                               3  ti*\(A-1\)/A + 2b\(pi*pj\)  kinetic energy     \(read the 2b part from the file passesd using 'Trel_pipj'\)) N
+(                               4  2b\(\(pi-pj\)^2\)  form of  the kinetic energy \(read the 2b part from the file passesd using 'Trel_2body'\)) N
+(                               7  kinetic term is SUPPRESSED) N
+() N
+(  Trel_pipj [=Trelpp_1.bcd]   Matrix elements of p_i*p_j) N
+() N
+(  Trel_2body[=Trelpp_2.bcd]   Matrix elements ot the kin. energy in 2b form) N
+() N
+(  ExtU1[=i[,U[,file]]]        External 1-body potential:) N
+(  ExtU1[=3,U1,U2]              i=0  no 1-b potential [default]) N
+(stdin) (Page 1/3) (Mar 27, 19 15:48) title
+border
+grestore
+(Printed by Dr Carlo Barbieri) rhead
+(stdin) (1/3) (Wednesday March 27, 2019) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (2) 2
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 4.015896 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(                                 1  diagonal form, taken from spe in the model space file) p n
+(                                 2  the potential from the specified file and multiply it by U [Defaults are U=1.0 file='Usp_ext.bcd']) N
+(                                 3  shitfs charge ==0 by U0 and charge ==1 by U1) N
+(  Radii                       Calculates the matter radii bsed on given sp propagator and Rrmspp_file \(defaults: 1+2-body) N
+(                             and 'Rrmspp_1.bcd'\).) N
+() N
+(  Rrms[=i,[Rrmspp_file]]      Options for calculating the center-of-mas corrected r.m.s. matter raidus and input file with) N
+(                             required two-body matrix elements:) N
+(                              i = 1    1- and 2-body  form with 2-body   mtx els.  \(r1*r2\)   , default file is 'Rrmspp_1.bcd') N
+(                                = 2     2-body-only   form with reative  mtx els.  \(r1-r2\)^2 , default file is 'Rrmspp_2.bcd') N
+(                             If only the Rrms option is given r.m.s. radii are calculated at each iteration.) N
+(                             Defaults:  i==1   and  Rrmspp_file == 'Rrmspp_1.bcd'.) N
+() N
+(  mass_p[=938.918...]          Set the particle mass to be used for calculations:) N
+(  mass_n[=938.918...]            - mass_p,  mass_n,  and mass_e  are the proton, neutron and electron masses ) N
+(  mass_e[=0.511...]                     For all of these, if the input value is missing then it is set to) N
+(                                        the BcDor defaults values found in 'BcDot-PhysConsts.hh'.) N
+(  mass_ave[=938.918,0.511]       - mass_ave is used for all other charges then p, n, and e  and  also for setting) N
+(                                        the h.o. parameters in the model space.  NOTE that THIS IS THE ONE USED FOR) N
+(                                        SETTING THE MODEL SPACE AND THE KINETIC ENERGY \(up to April 2015\).) N
+(                                 - Setting either mass_p and mass_n, it also changes the mass_ave ot the agerage.) N
+(                                        of the two.) N
+(                                 - Setting either mass_e, it also changes  mass_ave the same as mass_e.) N
+() N
+(  ItrMax[=0]                  Max # of iterations) N
+() N
+(  nDfw[=-100]                 Approximate # of particle solutions to look for when solving the Dyson eq. \(<0 means all!\)) N
+() N
+(  nDbk[=-100]                 Approximate # of   hole   solutions to look for when solving the Dyson eq. \(<0 means all!\)) N
+() N
+(  HF=[i]                      Hartree-Fock calculation, it sets ItrMax=i [default==0]) N
+() N
+(  2nd[=i]                     Second order self-energy, it sets ItrMax=i [default==0]) N
+() N
+(  ExtSE[=i]                   Reads the self-energy form a file in forlder 'bcdwk', it sets ItrMax=i [default==0]) N
+() N
+(  CCD[=aLM[,nStp]]            Solves the CCD equations ASSUMING AN HF PROPAGATOR AS INPUT. It useslinear mixing with mixing) N
+(                             parameter aLM [default value is aLM == 0.5] and it adiabatically increases the contributions beyond) N
+(                             1st order to the CC amplitudes in nStp steps \(default nStp == 1\). This last feature sometimes helps) N
+(                             reaching convergence but it slows down iterations; setting nStp==1 means to switch this off.) N
+() N
+(  SelCharge[=i_ch]            When calculating or manipulating a sefl-energy \('MakeSelfEn', 'PlotSelfEn' and 'PlotSelfEn'\), only the) N
+(                             the channels with charge == to 'i_ch' are done.) N
+(                             If solving the Dyson equation, only channles with charge == 'i_ch' are calculated and then copied into) N
+(                             the other channels \(assuming cherge independence\).) N
+() N
+(  MakeSelfEn[Fw,Bk][=i]       Builds the dinamic self-energy for the subshell i \(and for all of them if i<0\) [default: i=-1]) N
+(                               Adding 'Fw' computes only the forward part \(~2p1h\), 'Bk' only the backward part \(~2h1p\), otherwise) N
+(                               both are done.  The outputs are stored in folder 'bcdwk'. ) N
+() N
+(  PlotSelfEn[=i]              Write the full self-energy for the subshell i \(and for all of them if i<0\)to text files. The quantum) N
+(stdin) (Page 2/3) (Mar 27, 19 15:48) title
+border
+grestore
+(Printed by Dr Carlo Barbieri) rhead
+(stdin) (2/3) (Wednesday March 27, 2019) footer
+end % of iso1dict
+pagesave restore
+showpage
+%%Page: (3) 3
+%%BeginPageSetup
+/pagesave save def
+sh 0 translate 90 rotate
+%%EndPageSetup
+iso1dict begin
+gsave
+llx lly 12 add translate
+/v 0 store
+/x0 x v get 4.015896 add sx cw mul add store
+/y0 y v get bfs th add sub store
+x0 y0 moveto
+(                             numbers Jf, pi, dt and EHF or Fw/Bw description will be added to the file name to distiguish between) p n
+(                             different partial waves.) N
+() N
+(  Lanczos                     Uses a Krylov subspace algorhitm \(BAGEL-like\) to solve the Dyson Eq.) N
+() N
+(  LanDysPiv[=DysPivots.bcd]   File with the pivots to be used by the dyson-BAGEL algorhytm \(if the exists, reads the pivots from there\)) N
+() N
+(  SetEf=i,Ef                  The Fermi level for the subshell n. 'i' will be forced to 'Ef') N
+() N
+(  Koltun                      Extract information from the sp propagator \(# of particles, GMK sum rule etc..\)) N
+() N
+(  MBPT2                       Second order many-body PT) N
+() N
+(  MakeMdSp                    Builds a model space file. The output will be in 'input_msp-wt') N
+() N
+(  MakeSpProp[=i]              Builds a template sp_prop file based in the given model space \(output is 'sp_prop-wt'\)) N
+(                             i = 4*irw_n1 + 2*irw_n2 + irw_d1 [defaults i=0] controls the flags to write the output.) N
+() N
+(  ConvSpProp[=i]              Rewrite the input sp_prop file with the flags specified by i \(output is 'sp_prop-wt'\)) N
+(                             i = 4*irw_n1 + 2*irw_n2 + irw_d1 [defaults i=0].) N
+() N
+(  SpPropStat                  Prints out information from the input propagator \(such has the dimensions of the ladd- and ring-DRPA) N
+(                             eigenvalue problems or the number of 2qp1qh/2qh1qp poles for each channel\).) N
+() N
+(  MakePivots=n,file           Creates a pivots file based on the input propagator, for use with the BAGEL algorythm.) N
+() N
+(  ConvVpp[=outfile]           Loads the interaction \(using option 'Vpp'\) and converts it into a new format. This could be either) N
+(                             in native .bcd format or a binary file .bin for fast reading. The type of output file depends on thr) N
+(                             extension of the name given for'outfile'.) N
+() N
+() N
+(stdin) (Page 3/3) (Mar 27, 19 15:48) title
+border
+grestore
+(Printed by Dr Carlo Barbieri) rhead
+(stdin) (3/3) (Wednesday March 27, 2019) footer
+end % of iso1dict
+pagesave restore
+showpage
+
+%%Trailer
+end
+%%EOF
